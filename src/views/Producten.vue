@@ -30,13 +30,14 @@
 // @ is een alias voor de rootmap (src)
 // Destructuring wordt gebruikt om variabelen te maken
 // van de eigenschappen van het geëxporteerde object
-import { producten, categories } from '@/producten.js'
+import { categories } from '@/producten.js'
+import axios from 'axios'
 
 export default {
     data() {
         return {
             // waarde van eigenschappen komt uit geïmporteerde variabelen
-            producten: producten,
+            producten: [],
             categories: categories,
             // process.env geeft ons toegang tot omgevingsvariabelen van het project
             // de eigenschap BASE_URL wordt door Vue ingevuld met het absolute adres van de webapplicatie
@@ -50,6 +51,14 @@ export default {
 
         }
     },
+    async created() {
+        try {
+            const { data } = await axios.get("http://localhost:3333/producten");
+            this.producten = data;
+        } catch (ex) {
+            console.log(ex);            
+        }
+    }
 }
 </script>
 
